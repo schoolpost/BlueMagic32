@@ -1,0 +1,4 @@
+BlueMagic32	KEYWORD1
+connect	KEYWORD2
+disconnect	KEYWORD2
+clearPairing	KEYWORD2
