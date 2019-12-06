@@ -38,17 +38,87 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
 {
   BlueMagicState *blu = BlueMagicState::getInstance();
 
+  // for(int i = 0; i< length; i++){
+  //   char buf[3];
+  //   sprintf(buf,"%03D",pData[i]);
+  //   Serial.print(buf);
+  //   Serial.print(", ");
+  // }
+  // Serial.println();
+
   // recording
   if (length == 13 && pData[0] == 255 && pData[1] == 9 && pData[4] == 10 && pData[5] == 1)
   {
-    if (pData[8] == 0)
-    {
-      blu->setRecording(false);
-    }
-    if (pData[8] == 2)
-    {
-      blu->setRecording(true);
-    }
+    // if (pData[8] == 0)
+    // {
+    //   blu->setRecording(false);
+    // }
+    // if (pData[8] == 2)
+    // {
+    //   blu->setRecording(true);
+    // }
+    int8_t transportMode = pData[8];
+    blu->setTransportMode(transportMode);
+  }
+
+  //codec
+  if (pData[0] == 255 && pData[4] == 10 && pData[5] == 0)
+  {
+    int8_t codec = pData[8];
+    int8_t quality = pData[9];
+    blu->setCodec(codec);
+    blu->setQuality(quality);
+  }
+
+  //resolution + framerate
+  // 00:45:58.587 -> FF, 0E, 00, 00, 01, 09, 02, 02, 18, 00, 18, 00, 00, 10, 70, 08, 00, 00,
+  if (pData[0] == 255 && pData[4] == 1 && pData[5] == 9)
+  {
+
+    int16_t frL = pData[8];
+    int16_t frH = pData[9] << 8;
+    int16_t frameRate = frL + frH;
+
+    int16_t sfrL = pData[10];
+    int16_t sfrH = pData[11] << 8;
+    int16_t sensorRate = sfrL + sfrH;
+
+    int16_t wL = pData[12];
+    int16_t wH = pData[13] << 8;
+    int16_t width = wL + wH;
+
+    int16_t hL = pData[14];
+    int16_t hH = pData[15] << 8;
+    int16_t height = hL + hH;
+
+    blu->setFrameRate(frameRate);
+    blu->setSensorFrameRate(sensorRate);
+    blu->setFrameWidth(width);
+    blu->setFrameHeight(height);
+  }
+
+  // white balance
+  if (pData[0] == 255 && pData[4] == 1 && pData[5] == 2)
+  {
+    int16_t wbL = pData[8];
+    int16_t wbH = pData[9] << 8;
+    int16_t whiteBalance = wbL + wbH;
+
+    int16_t tintL = pData[10];
+    int16_t tintH = pData[11] << 8;
+    int16_t tint = tintL + tintH;
+
+    blu->setWhiteBalance(whiteBalance);
+    blu->setTint(tint);
+  }
+
+  // zoom
+  if (pData[0] == 255 && pData[4] == 0 && pData[5] == 7)
+  {
+    int16_t zL = pData[8];
+    int16_t zH = pData[9] << 8;
+    int16_t zoom = zL + zH;
+    blu->setZoom(zoom);
   }
 
   // aperture
@@ -363,9 +433,13 @@ void BluetoothCameraConnection::clearPairing()
   {
     disconnect();
   }
-  esp_ble_remove_bond_device(*getCameraAddress()->getNative());
+  if (*getCameraAddress()->getNative() != nullptr)
+  {
+    esp_ble_remove_bond_device(*getCameraAddress()->getNative());
+  }
+  esp_ble_remove_bond_device(*BLEAddress("90:fd:9f:c1:7b:4b").getNative());
   setAuthentication(false);
-  setCameraAddress(nullptr);
+  // setCameraAddress(nullptr);
   _pref->begin(_name.c_str(), false);
   _pref->putString("cameraAddress", "");
   _pref->putBool("authenticated", getAuthentication());

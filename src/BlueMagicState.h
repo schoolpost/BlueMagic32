@@ -11,19 +11,26 @@ private:
     String _timecode;
     uint32_t _timecodeRaw;
 
-    bool _recording = false;
+    // bool _recording = false;
+    int8_t _transportMode = 0;
     uint8_t _status = 0;
 
     float _aperture = 0;
     float _focus = 0;
+    int16_t _zoom = 0;
 
     int32_t _iso = 0;
     int32_t _shutter = 0;
-    int16_t _whiteBalance = 0;
+
+    int8_t _codec = 0;
+    int8_t _quality = 0;
     int16_t _frameRate = 0;
     int16_t _sensorFrameRate = 0;
     int16_t _frameWidth = 0;
     int16_t _frameHeight = 0;
+
+    int16_t _tint = 0;
+    int16_t _whiteBalance = 0;
 
 public:
     static BlueMagicState *getInstance();
@@ -35,8 +42,8 @@ public:
     String getTimecode();
     uint32_t getTimecodeRaw();
 
-    void setRecording(bool recording);
-    bool getRecording();
+    void setTransportMode(int8_t mode);
+    int8_t getTransportMode();
 
     void setAperture(float aperture);
     float getAperture();
@@ -44,20 +51,38 @@ public:
     void setFocus(float aperture);
     float getFocus();
 
+    void setZoom(int16_t zoom);
+    int16_t getZoom();
+
     void setIso(uint32_t iso);
     int32_t getIso();
 
-    void setShutter(uint16_t shutter);
+    void setShutter(int32_t shutter);
     int32_t getShutter();
 
-    void setWhiteBalance(uint16_t whiteBalance);
-    int16_t getWhiteBalance();
+    void setCodec(int8_t codec);
+    int8_t getCodec();
+
+    void setQuality(int8_t quality);
+    int8_t getQuality();
 
     void setFrameRate(int16_t frameRate);
     int16_t getFrameRate();
 
     void setSensorFrameRate(int16_t sensorFrameRate);
     int16_t getSensorFrameRate();
+
+    void setFrameWidth(int16_t width);
+    int16_t getFrameWidth();
+
+    void setFrameHeight(int16_t height);
+    int16_t getFrameHeight();
+
+    void setWhiteBalance(int16_t whiteBalance);
+    int16_t getWhiteBalance();
+
+    void setTint(int16_t tint);
+    int16_t getTint();
 };
 
 #endif

@@ -32,6 +32,11 @@ uint8_t BluetoothCameraController::getCameraStatus()
   _state->getCameraStatus();
 }
 
+int8_t BluetoothCameraController::getTransportMode()
+{
+  return _state->getTransportMode();
+}
+
 void BluetoothCameraController::record(bool record)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
@@ -44,7 +49,7 @@ void BluetoothCameraController::record(bool record)
 
 void BluetoothCameraController::toggleRecording()
 {
-  bool rec = _state->getRecording();
+  bool rec = isRecording();
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
   if (!rec)
   {
@@ -55,7 +60,12 @@ void BluetoothCameraController::toggleRecording()
 
 bool BluetoothCameraController::isRecording()
 {
-  return _state->getRecording();
+  int8_t mode = getTransportMode();
+  if (mode == 2)
+  {
+    return true;
+  }
+  return false;
 }
 
 void BluetoothCameraController::play(bool play)
@@ -68,10 +78,30 @@ void BluetoothCameraController::play(bool play)
   _cameraControl->writeValue(data, 12, true);
 }
 
-void BluetoothCameraController::preview()
+bool BluetoothCameraController::isPlaying()
+{
+  int8_t mode = getTransportMode();
+  if (mode == 1)
+  {
+    return true;
+  }
+  return false;
+}
+
+void BluetoothCameraController::preview(bool preview)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
   _cameraControl->writeValue(data, 12, true);
+}
+
+bool BluetoothCameraController::isPreviewing()
+{
+  int8_t mode = getTransportMode();
+  if (mode == 0)
+  {
+    return true;
+  }
+  return false;
 }
 
 void BluetoothCameraController::ois(bool enabled)
@@ -92,17 +122,19 @@ void BluetoothCameraController::codec(CODEC_TYPE c, CODEC_QUALITY q)
   _cameraControl->writeValue(data, 12, true);
 }
 
-CODEC_TYPE BluetoothCameraController::getCodecType()
+int8_t BluetoothCameraController::getCodecType()
 {
+  return _state->getCodec();
 }
 
-CODEC_QUALITY BluetoothCameraController::getCodecQuality()
+int8_t BluetoothCameraController::getCodecQuality()
 {
+  return _state->getQuality();
 }
 
 void BluetoothCameraController::focus(float focus)
 {
-  if (value < 0 && value > 1)
+  if (focus < 0 && focus > 1)
     return;
 
   uint16_t val = mapFloat(focus);
@@ -125,12 +157,12 @@ float BluetoothCameraController::getFocus()
   return _state->getFocus();
 }
 
-void BluetoothCameraController::zoom(float value)
+void BluetoothCameraController::zoom(float zoom)
 {
-  if (value < 0 && value > 1)
+  if (zoom < 0 && zoom > 1)
     return;
 
-  uint16_t val = mapFloat(focus);
+  uint16_t val = mapFloat(zoom);
 
   uint8_t xlow = val & 0xff;
   uint8_t xhigh = (val >> 8);
@@ -167,7 +199,9 @@ float BluetoothCameraController::getAperture()
 
 void BluetoothCameraController::iso(int32_t iso)
 {
-  (if iso < 0 && iso > 0x7FFFFFFF) return;
+
+  if (iso < 0 && iso > 0x7FFFFFFF)
+    return;
 
   uint8_t xlow = iso & 0xff;
   uint8_t xhigh = (iso >> 8);
@@ -241,17 +275,22 @@ int16_t BluetoothCameraController::getWhiteBalance()
   return _state->getWhiteBalance();
 }
 
+int16_t BluetoothCameraController::getTint()
+{
+  return _state->getTint();
+}
+
 void BluetoothCameraController::frameRate(int16_t frameRate)
 {
-  if (frameRate < 0)
-    return;
+  // if (frameRate < 0)
+  //   return;
 
   uint8_t frL = frameRate & 0xff;
   uint8_t frH = (frameRate >> 8);
 
-  uint8_t data[18] = {255, 8, 0, 0, 1, 9, 2, 0, frL, frH, 0, 0, 0, 0, 0, 0, 0, 0};
-  // uint8_t data[8] = {255, 8, 0, 0, 1, 9, 2, 0, frL, frH, 0, 0};
-  _cameraControl->writeValue(data, 18, true);
+  // uint8_t data[18] = {255, 8, 0, 0, 1, 9, 2, 0, frL, frH, 0, 0, 0, 0, 0, 0, 0, 0};
+  uint8_t data[18] = {255, 14, 0, 0, 1, 9, 2, 0, frL, frH, frL, frH, 0, 0, 0, 0, 0, 0};
+  _cameraControl->writeValue(data, 12, true);
 }
 
 int16_t BluetoothCameraController::getFrameRate()
@@ -268,13 +307,22 @@ void BluetoothCameraController::sensorFrameRate(int16_t sensorFrameRate)
   uint8_t sfrH = (sensorFrameRate >> 8);
 
   uint8_t data[18] = {255, 8, 0, 0, 1, 9, 2, 0, 0, 0, sfrL, sfrH, 0, 0, 0, 0, 0, 0};
-  // uint8_t data[8] = {255, 8, 0, 0, 1, 9, 2, 0, frL, frH, 0, 0};
   _cameraControl->writeValue(data, 18, true);
 }
 
-int16_t getSensorFrameRate()
+int16_t BluetoothCameraController::getSensorFrameRate()
 {
   return _state->getSensorFrameRate();
+}
+
+int16_t BluetoothCameraController::getFrameWidth()
+{
+  return _state->getFrameWidth();
+}
+
+int16_t BluetoothCameraController::getFrameHeight()
+{
+  return _state->getFrameHeight();
 }
 
 String BluetoothCameraController::timecode()

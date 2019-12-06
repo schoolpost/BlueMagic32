@@ -43,21 +43,21 @@ public:
 
   uint8_t getCameraStatus();
 
+  int8_t getTransportMode();
+
   void record(bool recording);
   void toggleRecording();
   bool isRecording();
 
   void play(bool play);
-  void togglePlay();
   bool isPlaying();
 
-  void preview();
-  void togglePreview();
+  void preview(bool preview);
   bool isPreviewing();
 
   void codec(CODEC_TYPE c, CODEC_QUALITY q);
-  CODEC_TYPE getCodecType();
-  CODEC_TYPE getCodecQuality();
+  int8_t getCodecType();
+  int8_t getCodecQuality();
 
   void focus(float value);
   float getFocus();
@@ -85,6 +85,7 @@ public:
   void whiteBalance(int16_t whiteBalance, int16_t tint);
   void autoWhiteBalance();
   int16_t getWhiteBalance();
+  int16_t getTint();
 
   void frameRate(int16_t frameRate);
   int16_t getFrameRate();
@@ -97,6 +98,7 @@ public:
   int16_t getFrameHeight();
 
   String timecode();
+  uint32_t timecodeRaw();
 
 private:
   friend class BluetoothCameraConnection;
