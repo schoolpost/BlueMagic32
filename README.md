@@ -18,6 +18,8 @@ ESP32 is a micro-controller from Espressif that can be found in lots of low-cost
 
 This library should work with vrtiually any ESP32 device, but for those stepping into the scene for the first time I would highly recommend the [M5StickC](https://m5stack.com/products/stick-c) as this development device comes with a builtin display, buttons, battery and lots more!
 
+![esp32](docs/devices.jpg)
+
 
 # Getting Started
 
@@ -39,7 +41,7 @@ Download this repository as a .zip file and add it to the Arduino Library.
 
 In the Arduino IDE in the toolbar go to:
 
-- Sketch > Include Library > Add .ZIP Library
+- *Sketch > Include Library > Add .ZIP Library*
 
 
 ## Usage
@@ -66,15 +68,15 @@ void setup() {
 
 Upon your first connection, you will need to enter the passcode displayed on your camera. To do this we will open the built in Serial Monitor by going to: 
 
-- Tools > Serial Monitor
+- *Tools > Serial Monitor*
   
 Make sure the baud rate is the same as what we have declared in the setup(), which in this case is: 115200
 
-- 115200 baud
+- *115200 baud*
 
 Now also make sure line ending is set to: Newline
 
-- Newline
+- *Newline*
 
 When the camera displays the passcode, enter that code into the input box at the top and click send. Afterwards the ESP32 and the camera should now be bonded and will remember each other, so when you reboot/ power cycle your ESP32 it will autoconnect to the camera. 
 
@@ -82,9 +84,9 @@ When the camera displays the passcode, enter that code into the input box at the
 
 Upon successful connection, we can now use the controller like this:
 
-```
-// we use the available() method to make sure we only read/write when a successful connection is established. Any calls to BMDControl should be wrapped in this method to make sure it is safe to call. 
+we use the **available()** method to make sure we only read/write when a successful connection is established. Any calls to BMDControl should be wrapped in this method to make sure it is safe to call. 
 
+```
 if (BMDConnection.available()) {
 
     // Starts recording
@@ -104,7 +106,7 @@ if (BMDConnection.available()) {
 
 #### Read Settings
 
-To read camera settings live, we can use the changed() method to only update our variables when the camera settings change:
+To read camera settings live, we can use the **changed()** method to only update our variables when the camera settings change:
 
 ```
 if(BMDControl->changed()){
@@ -136,7 +138,7 @@ long tc = BMDControl->timecodeRaw();
 ```
 
 #### Custom Commands
-For advanced users, you can use the custom() method to send your own data array for camera control:
+For advanced users, you can use the **custom()** method to send your own data array for camera control:
 ```
 // send the start recording command
 uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 2, 0, 0, 0};
@@ -158,9 +160,9 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
 
 Included in the library are a couple of basic examples to get you up and running. These are located in the examples folder and can be found in the Arduino IDE by going to:
 
-- File > Examples > BlueMagic32
+- *File > Examples > BlueMagic32*
 
-
+Open them, adjust yoru board settings and upload!
 
 ### Basic Remote Trigger 
 Start/Stop recording using a button. 
@@ -178,7 +180,7 @@ If this project helped you and you want support more cool projects like it:
 
 
 # Acknowledgments
-- BlackMagic Design's awesome SDK!
+- BlackMagic Design's awesome [SDK](https://www.blackmagicdesign.com/developer/product/camera)!
 - [nkolban](https://github.com/nkolban/esp32-snippets/tree/master/cpp_utils/tests/BLETests/Arduino) BLE examples
 
 
