@@ -32,8 +32,13 @@ private:
     int16_t _tint = 0;
     int16_t _whiteBalance = 0;
 
+    bool _changed = false;
+
 public:
     static BlueMagicState *getInstance();
+
+    void setChanged(bool changed);
+    bool changed();
 
     void setCameraStatus(uint8_t status);
     uint8_t getCameraStatus();

@@ -37,6 +37,7 @@ static void timeCodeNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, ui
 static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uint8_t *pData, size_t length, bool isNotify)
 {
   BlueMagicState *blu = BlueMagicState::getInstance();
+  bool changed = false;
 
   // for(int i = 0; i< length; i++){
   //   char buf[3];
@@ -49,14 +50,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   // recording
   if (length == 13 && pData[0] == 255 && pData[1] == 9 && pData[4] == 10 && pData[5] == 1)
   {
-    // if (pData[8] == 0)
-    // {
-    //   blu->setRecording(false);
-    // }
-    // if (pData[8] == 2)
-    // {
-    //   blu->setRecording(true);
-    // }
+    changed = true;
     int8_t transportMode = pData[8];
     blu->setTransportMode(transportMode);
   }
@@ -64,6 +58,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   //codec
   if (pData[0] == 255 && pData[4] == 10 && pData[5] == 0)
   {
+    changed = true;
     int8_t codec = pData[8];
     int8_t quality = pData[9];
     blu->setCodec(codec);
@@ -71,10 +66,9 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   }
 
   //resolution + framerate
-  // 00:45:58.587 -> FF, 0E, 00, 00, 01, 09, 02, 02, 18, 00, 18, 00, 00, 10, 70, 08, 00, 00,
   if (pData[0] == 255 && pData[4] == 1 && pData[5] == 9)
   {
-
+    changed = true;
     int16_t frL = pData[8];
     int16_t frH = pData[9] << 8;
     int16_t frameRate = frL + frH;
@@ -100,6 +94,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   // white balance
   if (pData[0] == 255 && pData[4] == 1 && pData[5] == 2)
   {
+    changed = true;
     int16_t wbL = pData[8];
     int16_t wbH = pData[9] << 8;
     int16_t whiteBalance = wbL + wbH;
@@ -115,6 +110,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   // zoom
   if (pData[0] == 255 && pData[4] == 0 && pData[5] == 7)
   {
+    changed = true;
     int16_t zL = pData[8];
     int16_t zH = pData[9] << 8;
     int16_t zoom = zL + zH;
@@ -124,6 +120,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   // aperture
   if (pData[0] == 255 && pData[4] == 0 && pData[5] == 2)
   {
+    changed = true;
     uint16_t low = pData[8];
     uint16_t high = pData[9] << 8;
     float aperture = sqrt(pow(2, (float(low + high) / 2048.0)));
@@ -133,6 +130,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   // iso
   if (pData[0] == 255 && pData[4] == 1 && pData[5] == 14)
   {
+    changed = true;
     uint16_t low = pData[8];
     uint16_t high = pData[9] << 8;
     int32_t iso = low + high;
@@ -142,11 +140,14 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   // shutter
   if (pData[0] == 255 && pData[4] == 1 && pData[5] == 11)
   {
+    changed = true;
     uint16_t low = pData[8];
     uint16_t high = pData[9] << 8;
     int32_t shutter = low + high;
     blu->setShutter(shutter);
   }
+
+  blu->setChanged(changed);
 }
 
 class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks

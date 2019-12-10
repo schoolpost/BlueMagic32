@@ -16,6 +16,18 @@ BlueMagicState::BlueMagicState()
 {
 }
 
+void BlueMagicState::setChanged(bool changed)
+{
+    _changed = changed;
+}
+
+bool BlueMagicState::changed()
+{
+    bool changed = _changed;
+    _changed = false;
+    return changed;
+}
+
 void BlueMagicState::setCameraStatus(uint8_t status)
 {
     _status = status;

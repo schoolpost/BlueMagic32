@@ -38,6 +38,8 @@ public:
   ~BluetoothCameraController();
   BluetoothCameraController();
 
+  bool changed();
+
   void setCamera(uint8_t index);
   void custom(uint8_t *data, size_t len);
 

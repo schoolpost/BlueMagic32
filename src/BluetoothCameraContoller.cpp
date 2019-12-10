@@ -12,6 +12,11 @@ BluetoothCameraController::BluetoothCameraController(BLERemoteCharacteristic *ou
 
 BluetoothCameraController::~BluetoothCameraController(){};
 
+bool BluetoothCameraController::changed()
+{
+  return _state->changed();
+}
+
 uint32_t BluetoothCameraController::mapFloat(float value)
 {
   return (uint32_t)mapf(value, 0, 1.0, 0, 2047.0);
@@ -114,6 +119,11 @@ void BluetoothCameraController::ois(bool enabled)
   _cameraControl->writeValue(data, 10, true);
 }
 
+bool BluetoothCameraController::getOis()
+{
+  return true;
+}
+
 void BluetoothCameraController::codec(CODEC_TYPE c, CODEC_QUALITY q)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 0, 1, 0, 0, 0, 0, 0};
@@ -169,6 +179,11 @@ void BluetoothCameraController::zoom(float zoom)
 
   uint8_t data[10] = {255, 6, 0, 0, 0, 8, 128, 0, xlow, xhigh};
   _cameraControl->writeValue(data, 10, true);
+}
+
+float BluetoothCameraController::getZoom()
+{
+  return 0.0;
 }
 
 void BluetoothCameraController::aperture(float value)
@@ -244,7 +259,7 @@ void BluetoothCameraController::shutterSpeed(int32_t shutter)
 
 int32_t BluetoothCameraController::getShutter()
 {
-  return _state->getShutter();
+  return _state->getShutter() / 100;
 }
 
 void BluetoothCameraController::whiteBalance(int16_t whiteBalance, int16_t tint)
