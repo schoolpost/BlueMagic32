@@ -1,48 +1,48 @@
-#include "BluetoothCameraController.h"
+#include "BlueMagicCameraController.h"
 
 double mapf(double val, double in_min, double in_max, double out_min, double out_max)
 {
   return (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-BluetoothCameraController::BluetoothCameraController(BLERemoteCharacteristic *outgoingCameraControl)
+BlueMagicCameraController::BlueMagicCameraController(BLERemoteCharacteristic *outgoingCameraControl)
 {
   _cameraControl = outgoingCameraControl;
 }
 
-BluetoothCameraController::~BluetoothCameraController(){};
+BlueMagicCameraController::~BlueMagicCameraController(){};
 
-bool BluetoothCameraController::changed()
+bool BlueMagicCameraController::changed()
 {
   return _state->changed();
 }
 
-uint32_t BluetoothCameraController::mapFloat(float value)
+uint32_t BlueMagicCameraController::mapFloat(float value)
 {
   return (uint32_t)mapf(value, 0, 1.0, 0, 2047.0);
 }
 
-void BluetoothCameraController::setCamera(uint8_t index)
+void BlueMagicCameraController::setCamera(uint8_t index)
 {
   _cameraIndex = index;
 }
 
-void BluetoothCameraController::custom(uint8_t *data, size_t len)
+void BlueMagicCameraController::custom(uint8_t *data, size_t len)
 {
   _cameraControl->writeValue(data, len, true);
 }
 
-uint8_t BluetoothCameraController::getCameraStatus()
+uint8_t BlueMagicCameraController::getCameraStatus()
 {
   _state->getCameraStatus();
 }
 
-int8_t BluetoothCameraController::getTransportMode()
+int8_t BlueMagicCameraController::getTransportMode()
 {
   return _state->getTransportMode();
 }
 
-void BluetoothCameraController::record(bool record)
+void BlueMagicCameraController::record(bool record)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
   if (record)
@@ -52,7 +52,7 @@ void BluetoothCameraController::record(bool record)
   _cameraControl->writeValue(data, 12, true);
 }
 
-void BluetoothCameraController::toggleRecording()
+void BlueMagicCameraController::toggleRecording()
 {
   bool rec = isRecording();
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
@@ -63,7 +63,7 @@ void BluetoothCameraController::toggleRecording()
   _cameraControl->writeValue(data, 12, true);
 }
 
-bool BluetoothCameraController::isRecording()
+bool BlueMagicCameraController::isRecording()
 {
   int8_t mode = getTransportMode();
   if (mode == 2)
@@ -73,7 +73,7 @@ bool BluetoothCameraController::isRecording()
   return false;
 }
 
-void BluetoothCameraController::play(bool play)
+void BlueMagicCameraController::play(bool play)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
   if (play)
@@ -83,7 +83,7 @@ void BluetoothCameraController::play(bool play)
   _cameraControl->writeValue(data, 12, true);
 }
 
-bool BluetoothCameraController::isPlaying()
+bool BlueMagicCameraController::isPlaying()
 {
   int8_t mode = getTransportMode();
   if (mode == 1)
@@ -93,13 +93,13 @@ bool BluetoothCameraController::isPlaying()
   return false;
 }
 
-void BluetoothCameraController::preview(bool preview)
+void BlueMagicCameraController::preview(bool preview)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 0, 0, 0, 0};
   _cameraControl->writeValue(data, 12, true);
 }
 
-bool BluetoothCameraController::isPreviewing()
+bool BlueMagicCameraController::isPreviewing()
 {
   int8_t mode = getTransportMode();
   if (mode == 0)
@@ -109,7 +109,7 @@ bool BluetoothCameraController::isPreviewing()
   return false;
 }
 
-void BluetoothCameraController::ois(bool enabled)
+void BlueMagicCameraController::ois(bool enabled)
 {
   uint8_t data[10] = {255, 6, 0, 0, 0, 6, 0, 0, 0};
   if (enabled)
@@ -119,12 +119,12 @@ void BluetoothCameraController::ois(bool enabled)
   _cameraControl->writeValue(data, 10, true);
 }
 
-bool BluetoothCameraController::getOis()
+bool BlueMagicCameraController::getOis()
 {
   return true;
 }
 
-void BluetoothCameraController::codec(CODEC_TYPE c, CODEC_QUALITY q)
+void BlueMagicCameraController::codec(CODEC_TYPE c, CODEC_QUALITY q)
 {
   uint8_t data[12] = {255, 5, 0, 0, 10, 0, 1, 0, 0, 0, 0, 0};
   data[8] = c;
@@ -132,17 +132,17 @@ void BluetoothCameraController::codec(CODEC_TYPE c, CODEC_QUALITY q)
   _cameraControl->writeValue(data, 12, true);
 }
 
-int8_t BluetoothCameraController::getCodecType()
+int8_t BlueMagicCameraController::getCodecType()
 {
   return _state->getCodec();
 }
 
-int8_t BluetoothCameraController::getCodecQuality()
+int8_t BlueMagicCameraController::getCodecQuality()
 {
   return _state->getQuality();
 }
 
-void BluetoothCameraController::focus(float focus)
+void BlueMagicCameraController::focus(float focus)
 {
   if (focus < 0 && focus > 1)
     return;
@@ -156,18 +156,18 @@ void BluetoothCameraController::focus(float focus)
   _cameraControl->writeValue(data, 10, true);
 }
 
-void BluetoothCameraController::instantAutoFocus()
+void BlueMagicCameraController::instantAutoFocus()
 {
   uint8_t data[12] = {255, 4, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0};
   _cameraControl->writeValue(data, 12, true);
 }
 
-float BluetoothCameraController::getFocus()
+float BlueMagicCameraController::getFocus()
 {
   return _state->getFocus();
 }
 
-void BluetoothCameraController::zoom(float zoom)
+void BlueMagicCameraController::zoom(float zoom)
 {
   if (zoom < 0 && zoom > 1)
     return;
@@ -181,12 +181,12 @@ void BluetoothCameraController::zoom(float zoom)
   _cameraControl->writeValue(data, 10, true);
 }
 
-float BluetoothCameraController::getZoom()
+float BlueMagicCameraController::getZoom()
 {
   return 0.0;
 }
 
-void BluetoothCameraController::aperture(float value)
+void BlueMagicCameraController::aperture(float value)
 {
   if (value < 0 && value > 1)
     return;
@@ -201,18 +201,18 @@ void BluetoothCameraController::aperture(float value)
   _cameraControl->writeValue(data, 10, true);
 }
 
-void BluetoothCameraController::autoAperture()
+void BlueMagicCameraController::autoAperture()
 {
   uint8_t data[12] = {255, 4, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0};
   _cameraControl->writeValue(data, 12, true);
 }
 
-float BluetoothCameraController::getAperture()
+float BlueMagicCameraController::getAperture()
 {
   return _state->getAperture();
 }
 
-void BluetoothCameraController::iso(int32_t iso)
+void BlueMagicCameraController::iso(int32_t iso)
 {
 
   if (iso < 0 && iso > 0x7FFFFFFF)
@@ -226,12 +226,12 @@ void BluetoothCameraController::iso(int32_t iso)
   _cameraControl->writeValue(data, 12, true);
 }
 
-int32_t BluetoothCameraController::getIso()
+int32_t BlueMagicCameraController::getIso()
 {
   return _state->getIso();
 }
 
-void BluetoothCameraController::shutterAngle(int32_t shutter)
+void BlueMagicCameraController::shutterAngle(int32_t shutter)
 {
   if (shutter < 1 && shutter > 360)
     return;
@@ -245,7 +245,7 @@ void BluetoothCameraController::shutterAngle(int32_t shutter)
   _cameraControl->writeValue(data, 12, true);
 }
 
-void BluetoothCameraController::shutterSpeed(int32_t shutter)
+void BlueMagicCameraController::shutterSpeed(int32_t shutter)
 {
   if (shutter < 24 && shutter > 2000)
     return;
@@ -257,12 +257,12 @@ void BluetoothCameraController::shutterSpeed(int32_t shutter)
   _cameraControl->writeValue(data, 12, true);
 }
 
-int32_t BluetoothCameraController::getShutter()
+int32_t BlueMagicCameraController::getShutter()
 {
   return _state->getShutter() / 100;
 }
 
-void BluetoothCameraController::whiteBalance(int16_t whiteBalance, int16_t tint)
+void BlueMagicCameraController::whiteBalance(int16_t whiteBalance, int16_t tint)
 {
   if (whiteBalance < 2500 && whiteBalance > 10000)
     return;
@@ -279,23 +279,23 @@ void BluetoothCameraController::whiteBalance(int16_t whiteBalance, int16_t tint)
   _cameraControl->writeValue(data, 12, true);
 }
 
-void BluetoothCameraController::autoWhiteBalance()
+void BlueMagicCameraController::autoWhiteBalance()
 {
   uint8_t data[12] = {255, 4, 0, 0, 1, 3, 1, 0, 0, 0, 0, 0};
   _cameraControl->writeValue(data, 12, true);
 }
 
-int16_t BluetoothCameraController::getWhiteBalance()
+int16_t BlueMagicCameraController::getWhiteBalance()
 {
   return _state->getWhiteBalance();
 }
 
-int16_t BluetoothCameraController::getTint()
+int16_t BlueMagicCameraController::getTint()
 {
   return _state->getTint();
 }
 
-void BluetoothCameraController::frameRate(int16_t frameRate)
+void BlueMagicCameraController::frameRate(int16_t frameRate)
 {
   // if (frameRate < 0)
   //   return;
@@ -308,12 +308,12 @@ void BluetoothCameraController::frameRate(int16_t frameRate)
   _cameraControl->writeValue(data, 12, true);
 }
 
-int16_t BluetoothCameraController::getFrameRate()
+int16_t BlueMagicCameraController::getFrameRate()
 {
   return _state->getFrameRate();
 }
 
-void BluetoothCameraController::sensorFrameRate(int16_t sensorFrameRate)
+void BlueMagicCameraController::sensorFrameRate(int16_t sensorFrameRate)
 {
   if (sensorFrameRate < 0)
     return;
@@ -325,27 +325,27 @@ void BluetoothCameraController::sensorFrameRate(int16_t sensorFrameRate)
   _cameraControl->writeValue(data, 18, true);
 }
 
-int16_t BluetoothCameraController::getSensorFrameRate()
+int16_t BlueMagicCameraController::getSensorFrameRate()
 {
   return _state->getSensorFrameRate();
 }
 
-int16_t BluetoothCameraController::getFrameWidth()
+int16_t BlueMagicCameraController::getFrameWidth()
 {
   return _state->getFrameWidth();
 }
 
-int16_t BluetoothCameraController::getFrameHeight()
+int16_t BlueMagicCameraController::getFrameHeight()
 {
   return _state->getFrameHeight();
 }
 
-String BluetoothCameraController::timecode()
+String BlueMagicCameraController::timecode()
 {
   return _state->getTimecode();
 }
 
-uint32_t BluetoothCameraController::timecodeRaw()
+uint32_t BlueMagicCameraController::timecodeRaw()
 {
   return _state->getTimecodeRaw();
 }

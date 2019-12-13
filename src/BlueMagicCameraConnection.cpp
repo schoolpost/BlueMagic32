@@ -1,10 +1,10 @@
-#include "BluetoothCameraConnection.h"
+#include "BlueMagicCameraConnection.h"
 
-BLERemoteCharacteristic *BluetoothCameraConnection::_cameraStatus;
-BLERemoteCharacteristic *BluetoothCameraConnection::_deviceName;
-BLERemoteCharacteristic *BluetoothCameraConnection::_timecode;
-BLERemoteCharacteristic *BluetoothCameraConnection::_outgoingCameraControl;
-BLERemoteCharacteristic *BluetoothCameraConnection::_incomingCameraControl;
+BLERemoteCharacteristic *BlueMagicCameraConnection::_cameraStatus;
+BLERemoteCharacteristic *BlueMagicCameraConnection::_deviceName;
+BLERemoteCharacteristic *BlueMagicCameraConnection::_timecode;
+BLERemoteCharacteristic *BlueMagicCameraConnection::_outgoingCameraControl;
+BLERemoteCharacteristic *BlueMagicCameraConnection::_incomingCameraControl;
 
 static BLEUUID OutgoingCameraControl("5DD3465F-1AEE-4299-8493-D2ECA2F8E1BB");
 static BLEUUID IncomingCameraControl("B864E140-76A0-416A-BF30-5876504537D9");
@@ -212,11 +212,11 @@ class MySecurity : public BLESecurityCallbacks
   }
 };
 
-BluetoothCameraConnection::BluetoothCameraConnection()
+BlueMagicCameraConnection::BlueMagicCameraConnection()
 {
 }
 
-BluetoothCameraConnection::~BluetoothCameraConnection()
+BlueMagicCameraConnection::~BlueMagicCameraConnection()
 {
   delete _cameraStatus, _deviceName, _timecode, _outgoingCameraControl, _incomingCameraControl, _device;
   delete _client;
@@ -224,12 +224,12 @@ BluetoothCameraConnection::~BluetoothCameraConnection()
   _device.deinit(true);
 }
 
-void BluetoothCameraConnection::begin()
+void BlueMagicCameraConnection::begin()
 {
   begin("BlueMagic32");
 }
 
-void BluetoothCameraConnection::begin(String name)
+void BlueMagicCameraConnection::begin(String name)
 {
   _name = name;
   setState(CAMERA_DISCONNECTED);
@@ -261,7 +261,7 @@ void BluetoothCameraConnection::begin(String name)
   pSecurity->setRespEncryptionKey(ESP_BLE_ENC_KEY_MASK | ESP_BLE_ID_KEY_MASK);
 }
 
-bool BluetoothCameraConnection::scan(bool active, int duration)
+bool BlueMagicCameraConnection::scan(bool active, int duration)
 {
   if (getAuthentication() && getCameraAddress() != nullptr)
   {
@@ -278,17 +278,17 @@ bool BluetoothCameraConnection::scan(bool active, int duration)
   return true;
 }
 
-int BluetoothCameraConnection::connected()
+int BlueMagicCameraConnection::connected()
 {
   return _connected;
 }
 
-bool BluetoothCameraConnection::available()
+bool BlueMagicCameraConnection::available()
 {
   return connected() && (_cameraControl != nullptr);
 }
 
-bool BluetoothCameraConnection::connectToServer(BLEAddress address)
+bool BlueMagicCameraConnection::connectToServer(BLEAddress address)
 {
   _client = _device.createClient();
   setState(CAMERA_CONNECTING);
@@ -348,42 +348,42 @@ bool BluetoothCameraConnection::connectToServer(BLEAddress address)
   return true;
 }
 
-void BluetoothCameraConnection::setController()
+void BlueMagicCameraConnection::setController()
 {
-  _cameraControl = new BluetoothCameraController(_outgoingCameraControl);
+  _cameraControl = new BlueMagicCameraController(_outgoingCameraControl);
 }
 
-void BluetoothCameraConnection::setState(CONNECTION_STATE state)
+void BlueMagicCameraConnection::setState(CONNECTION_STATE state)
 {
   _connected = state;
 }
 
-void BluetoothCameraConnection::setAuthentication(bool authenticated)
+void BlueMagicCameraConnection::setAuthentication(bool authenticated)
 {
   _authenticated = authenticated;
 }
 
-bool BluetoothCameraConnection::getAuthentication()
+bool BlueMagicCameraConnection::getAuthentication()
 {
   return _authenticated;
 }
 
-void BluetoothCameraConnection::setCameraAddress(BLEAddress address)
+void BlueMagicCameraConnection::setCameraAddress(BLEAddress address)
 {
   _cameraAddress = &address;
 }
 
-BLEAddress *BluetoothCameraConnection::getCameraAddress()
+BLEAddress *BlueMagicCameraConnection::getCameraAddress()
 {
   return _cameraAddress;
 }
 
-BluetoothCameraController *BluetoothCameraConnection::connect()
+BlueMagicCameraController *BlueMagicCameraConnection::connect()
 {
   return connect(0);
 }
 
-BluetoothCameraController *BluetoothCameraConnection::connect(uint8_t index)
+BlueMagicCameraController *BlueMagicCameraConnection::connect(uint8_t index)
 {
   if (_cameraControl != nullptr)
   {
@@ -420,7 +420,7 @@ BluetoothCameraController *BluetoothCameraConnection::connect(uint8_t index)
   return nullptr;
 }
 
-void BluetoothCameraConnection::disconnect()
+void BlueMagicCameraConnection::disconnect()
 {
   _client->disconnect();
   delete _cameraControl;
@@ -428,7 +428,7 @@ void BluetoothCameraConnection::disconnect()
   setState(CAMERA_DISCONNECTED);
 }
 
-void BluetoothCameraConnection::clearPairing()
+void BlueMagicCameraConnection::clearPairing()
 {
   if (connected() != CAMERA_DISCONNECTED)
   {

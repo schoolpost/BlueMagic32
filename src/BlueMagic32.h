@@ -1,5 +1,5 @@
-#include "BluetoothCameraConnection.h"
-#include "BluetoothCameraController.h"
+#include "BlueMagicCameraConnection.h"
+#include "BlueMagicCameraController.h"
 
-BluetoothCameraConnection BMDConnection;
-BluetoothCameraController *BMDControl;
+BlueMagicCameraConnection BMDConnection;
+BlueMagicCameraController *BMDControl;

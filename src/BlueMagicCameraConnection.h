@@ -8,13 +8,13 @@
 #define PREF_INCLUDED false
 #endif
 
-#ifndef BluetoothCameraConnection_h
+#ifndef BlueMagicCameraConnection_h
 
-#define BluetoothCameraConnection_h
+#define BlueMagicCameraConnection_h
 
 #include "Arduino.h"
 #include "BlueMagicState.h"
-#include "BluetoothCameraController.h"
+#include "BlueMagicCameraController.h"
 
 enum CONNECTION_STATE
 {
@@ -23,12 +23,12 @@ enum CONNECTION_STATE
   CAMERA_CONNECTING = 3
 };
 
-class BluetoothCameraConnection
+class BlueMagicCameraConnection
 {
 
 public:
-  BluetoothCameraConnection();
-  ~BluetoothCameraConnection();
+  BlueMagicCameraConnection();
+  ~BlueMagicCameraConnection();
 
   void begin();
   void begin(String name);
@@ -36,8 +36,8 @@ public:
 
   bool scan(bool active, int duration);
 
-  BluetoothCameraController *connect();
-  BluetoothCameraController *connect(uint8_t index);
+  BlueMagicCameraController *connect();
+  BlueMagicCameraController *connect(uint8_t index);
 
   void disconnect();
 
@@ -65,7 +65,7 @@ private:
 
   BLEScan *_bleScan;
 
-  BluetoothCameraController *_cameraControl = nullptr;
+  BlueMagicCameraController *_cameraControl = nullptr;
 
   bool connectToServer(BLEAddress address);
 

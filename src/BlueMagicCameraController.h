@@ -1,6 +1,6 @@
-#ifndef BluetoothCameraController_h
+#ifndef BlueMagicCameraController_h
 
-#define BluetoothCameraController_h
+#define BlueMagicCameraController_h
 
 #include <BLEDevice.h>
 #include "BlueMagicState.h"
@@ -32,11 +32,11 @@ enum CODEC_QUALITY
   BRAW_121 = 5
 };
 
-class BluetoothCameraController
+class BlueMagicCameraController
 {
 public:
-  ~BluetoothCameraController();
-  BluetoothCameraController();
+  ~BlueMagicCameraController();
+  BlueMagicCameraController();
 
   bool changed();
 
@@ -103,8 +103,8 @@ public:
   uint32_t timecodeRaw();
 
 private:
-  friend class BluetoothCameraConnection;
-  BluetoothCameraController(BLERemoteCharacteristic *outgoingCameraControl);
+  friend class BlueMagicCameraConnection;
+  BlueMagicCameraController(BLERemoteCharacteristic *outgoingCameraControl);
   BLERemoteCharacteristic *_cameraControl;
   BlueMagicState *_state = BlueMagicState::getInstance();
   uint8_t _cameraIndex = 255;
