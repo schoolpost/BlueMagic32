@@ -2,9 +2,9 @@
 
 [![Donate](https://img.shields.io/badge/BlackmagicCameraControl-1.3-green.svg)](YOUR_EMAIL_CODE)
 
-Arduino ESP32 Library for connecting to Blackmagic Cameras using Bluetooth Low Energy. 
+Arduino ESP32 Library for connecting to Blackmagic Cameras using Bluetooth Low Energy.
 
-Control/Read camera parameters like Recording, Focus, Aperture, Shutter Angle, White balance, etc... 
+Control/Read camera parameters like Recording, Focus, Aperture, Shutter Angle, White balance, etc...
 
 #### Tested With BlackMagic Pocket Cinema Camera 4K
 
@@ -20,29 +20,25 @@ This library should work with vrtiually any ESP32 device, but for those stepping
 
 ![esp32](docs/devices.jpg)
 
-
 # Getting Started
-
 
 ## Installation
 
 ### Prerequisites
 
-You will need to install these software packages first. Get the latest version of the Arduino IDE ( version 1.8 or later ) and the ESP32 Arduino library ( version 1.0.4 or later ). Below are download links / guides on how to install them. 
+You will need to install these software packages first. Get the latest version of the Arduino IDE ( version 1.8 or later ) and the ESP32 Arduino library ( version 1.0.4 or later ). Below are download links / guides on how to install them.
 
 - [Arduino IDE](https://www.arduino.cc/en/main/software)
 
 - [ESP32 Arduino Library](https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md)
 
-
 ### Installing BlueMagic32
 
-Download this repository as a .zip file and add it to the Arduino Library.  
+Download this repository as a .zip file and add it to the Arduino Library.
 
 In the Arduino IDE in the toolbar go to:
 
-- *Sketch > Include Library > Add .ZIP Library*
-
+- _Sketch > Include Library > Add .ZIP Library_
 
 ## Usage
 
@@ -54,37 +50,37 @@ Include the library in your sketch
 #include <BlueMagic32.h>
 ```
 
-Create a connection with a device name ( here we use "BlueMagic32" it will show up as the device connected to the camera.) and get the controller object, this should be done in your setup(). We also start Serial here for later use. 
+Create a connection with a device name ( here we use "BlueMagic32" it will show up as the device connected to the camera.) and get the controller object, this should be done in your setup(). We also start Serial here for later use.
 
 ```
 void setup() {
 
     Serial.begin(115200);
-    BMDConnection.begin("BlueMagic32"); 
+    BMDConnection.begin("BlueMagic32");
     BMDControl = BMDConnection.connect();
 
 }
 ```
 
-Upon your first connection, you will need to enter the passcode displayed on your camera. To do this we will open the built in Serial Monitor by going to: 
+Upon your first connection, you will need to enter the passcode displayed on your camera. To do this we will open the built in Serial Monitor by going to:
 
-- *Tools > Serial Monitor*
-  
+- _Tools > Serial Monitor_
+
 Make sure the baud rate is the same as what we have declared in the setup(), which in this case is: 115200
 
-- *115200 baud*
+- _115200 baud_
 
 Now also make sure line ending is set to: Newline
 
-- *Newline*
+- _Newline_
 
-When the camera displays the passcode, enter that code into the input box at the top and click send. Afterwards the ESP32 and the camera should now be bonded and will remember each other, so when you reboot/ power cycle your ESP32 it will autoconnect to the camera. 
+When the camera displays the passcode, enter that code into the input box at the top and click send. Afterwards the ESP32 and the camera should now be bonded and will remember each other, so when you reboot/ power cycle your ESP32 it will autoconnect to the camera.
 
 #### Write Settings
 
 Upon successful connection, we can now use the controller like this:
 
-we use the **available()** method to make sure we only read/write when a successful connection is established. Any calls to BMDControl should be wrapped in this method to make sure it is safe to call. 
+we use the **available()** method to make sure we only read/write when a successful connection is established. Any calls to BMDControl should be wrapped in this method to make sure it is safe to call.
 
 ```
 if (BMDConnection.available()) {
@@ -117,7 +113,7 @@ if(BMDControl->changed()){
     // Get the current shutter setting ( as shutter angle )
     int shutter = BMDControl->getShutter();
 
-    // Get the current frame rate setting 
+    // Get the current frame rate setting
     int frameRate = BMDControl->getFrameRate();
 
     // Get the current iso setting
@@ -129,6 +125,7 @@ if(BMDControl->changed()){
 #### Timecode
 
 To get live timecode:
+
 ```
 // Get the current timecode as a string
 String tc = BMDControl->timecode();
@@ -138,7 +135,9 @@ long tc = BMDControl->timecodeRaw();
 ```
 
 #### Custom Commands
+
 For advanced users, you can use the **custom()** method to send your own data array for camera control:
+
 ```
 // send the start recording command
 uint8_t data[12] = {255, 5, 0, 0, 10, 1, 1, 0, 2, 0, 0, 0};
@@ -153,35 +152,43 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
   ```
   BMDConnection.clearPairing();
   ```
-- Clear the paired devcies on your camera. 
+- Clear the paired devcies on your camera.
 
+## API Reference
+
+```
+
+
+
+```
 
 ## Examples
 
 Included in the library are a couple of basic examples to get you up and running. These are located in the examples folder and can be found in the Arduino IDE by going to:
 
-- *File > Examples > BlueMagic32*
+- _File > Examples > BlueMagic32_
 
 Open them, adjust yoru board settings and upload!
 
-### Basic Remote Trigger 
-Start/Stop recording using a button. 
+### Basic Remote Trigger
+
+Start/Stop recording using a button.
 
 ### M5StickC Trigger with Timecode
-Start/Stop recording using the builtin button with live timecode display. 
+
+Start/Stop recording using the builtin button with live timecode display.
 
 ### M5StickC Settings Display
-Display live camera settings on the builtin screen. 
+
+Display live camera settings on the builtin screen.
 
 # Donation
+
 If this project helped you and you want support more cool projects like it:
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZDU59MDJ3VXF6&source=url)
 
-
 # Acknowledgments
+
 - BlackMagic Design's awesome [SDK](https://www.blackmagicdesign.com/developer/product/camera)!
 - [nkolban](https://github.com/nkolban/esp32-snippets/tree/master/cpp_utils/tests/BLETests/Arduino) BLE examples
-
-
-
