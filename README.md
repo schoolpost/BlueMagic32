@@ -156,10 +156,88 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
 
 ## API Reference
 
+#### Connection Methods
+
+```
+  void begin();
+  void begin(String name);
+
+  bool scan(bool active, int duration);
+
+  BlueMagicCameraController *connect();
+
+  void disconnect();
+
+  void clearPairing();
+
+  bool available();
 ```
 
+#### Controller Methods
 
+```
+  bool changed();
 
+  void setCamera(uint8_t index);
+  void custom(uint8_t *data, size_t len);
+
+  uint8_t getCameraStatus();
+  int8_t getTransportMode();
+
+  void record(bool recording);
+  void toggleRecording();
+  bool isRecording();
+
+  void play(bool play);
+  bool isPlaying();
+
+  void preview(bool preview);
+  bool isPreviewing();
+
+  void codec(CODEC_TYPE c, CODEC_QUALITY q);
+  int8_t getCodecType();
+  int8_t getCodecQuality();
+
+  void focus(float value);
+  float getFocus();
+  void instantAutoFocus();
+
+  void ois(bool enabled);
+  bool getOis();
+
+  void zoom(float value);
+  float getZoom();
+
+  void aperture(float value);
+  void autoAperture();
+  float getAperture();
+
+  void autoExposureMode(int value);
+
+  void iso(int32_t iso);
+  int32_t getIso();
+
+  void shutterSpeed(int32_t value);
+  void shutterAngle(int32_t value);
+  int32_t getShutter();
+
+  void whiteBalance(int16_t whiteBalance, int16_t tint);
+  void autoWhiteBalance();
+  int16_t getWhiteBalance();
+  int16_t getTint();
+
+  void frameRate(int16_t frameRate);
+  int16_t getFrameRate();
+
+  void sensorFrameRate(int16_t sensorFrameRate);
+  int16_t getSensorFrameRate();
+
+  void resolution(int16_t width, int16_t height);
+  int16_t getFrameWidth();
+  int16_t getFrameHeight();
+
+  String timecode();
+  uint32_t timecodeRaw();
 ```
 
 ## Examples
