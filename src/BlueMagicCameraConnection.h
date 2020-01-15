@@ -48,6 +48,7 @@ public:
 private:
   String _name;
   Preferences *_pref;
+  bool _init = false;
 
   bool _authenticated;
   int _connected;

@@ -18,34 +18,28 @@ static BLEUUID BmdCameraService("291D567A-6D75-11E6-8B77-86F30CA893D3");
 static void cameraStatusNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uint8_t *pData, size_t length, bool isNotify)
 {
   BlueMagicState *blu = BlueMagicState::getInstance();
+  blu->statusNotify(true, pData);
   blu->setCameraStatus(pData[0]);
 }
 
 static void timeCodeNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uint8_t *pData, size_t length, bool isNotify)
 {
+  BlueMagicState *blu = BlueMagicState::getInstance();
+  blu->timecodeNotify(true, pData);
   // timecode
   uint8_t H, M, S, f;
   H = (pData[11] / 16 * 10) + (pData[11] % 16);
   M = (pData[10] / 16 * 10) + (pData[10] % 16);
   S = (pData[9] / 16 * 10) + (pData[9] % 16);
   f = (pData[8] / 16 * 10) + (pData[8] % 16);
-
-  BlueMagicState *blu = BlueMagicState::getInstance();
   blu->setTimecode(H, M, S, f);
 }
 
 static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uint8_t *pData, size_t length, bool isNotify)
 {
   BlueMagicState *blu = BlueMagicState::getInstance();
+  blu->settingsNotify(true, pData);
   bool changed = false;
-
-  // for(int i = 0; i< length; i++){
-  //   char buf[3];
-  //   sprintf(buf,"%03D",pData[i]);
-  //   Serial.print(buf);
-  //   Serial.print(", ");
-  // }
-  // Serial.println();
 
   // recording
   if (length == 13 && pData[0] == 255 && pData[1] == 9 && pData[4] == 10 && pData[5] == 1)
@@ -221,6 +215,7 @@ BlueMagicCameraConnection::~BlueMagicCameraConnection()
   delete _cameraStatus, _deviceName, _timecode, _outgoingCameraControl, _incomingCameraControl, _device;
   delete _client;
   delete _cameraControl;
+  _init = false;
   _device.deinit(true);
 }
 
@@ -231,6 +226,12 @@ void BlueMagicCameraConnection::begin()
 
 void BlueMagicCameraConnection::begin(String name)
 {
+
+  if (_init)
+  {
+    return;
+  }
+
   _name = name;
   setState(CAMERA_DISCONNECTED);
 
@@ -259,6 +260,8 @@ void BlueMagicCameraConnection::begin(String name)
   pSecurity->setAuthenticationMode(ESP_LE_AUTH_REQ_SC_BOND);
   pSecurity->setCapability(ESP_IO_CAP_IN);
   pSecurity->setRespEncryptionKey(ESP_BLE_ENC_KEY_MASK | ESP_BLE_ID_KEY_MASK);
+
+  _init = true;
 }
 
 bool BlueMagicCameraConnection::scan(bool active, int duration)

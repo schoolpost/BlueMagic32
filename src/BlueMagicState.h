@@ -34,11 +34,31 @@ private:
 
     bool _changed = false;
 
+    uint8_t *_settingsData = nullptr;
+    uint8_t *_timecodeData = nullptr;
+    uint8_t *_statusData = nullptr;
+
+    bool _settingsChanged = false;
+    bool _timecodeChanged = false;
+    bool _statusChanged = false;
+
 public:
     static BlueMagicState *getInstance();
 
     void setChanged(bool changed);
     bool changed();
+
+    void settingsNotify(bool changed, uint8_t *data);
+    bool settingsChanged();
+    uint8_t *settingsData();
+
+    void timecodeNotify(bool changed, uint8_t *data);
+    bool timecodeChanged();
+    uint8_t *timecodeData();
+
+    void statusNotify(bool changed, uint8_t *data);
+    bool statusChanged();
+    uint8_t *statusData();
 
     void setCameraStatus(uint8_t status);
     uint8_t getCameraStatus();

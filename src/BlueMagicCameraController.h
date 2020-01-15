@@ -40,6 +40,15 @@ public:
 
   bool changed();
 
+  bool settingsChanged();
+  uint8_t *settingsData();
+
+  bool timecodeChanged();
+  uint8_t *timecodeData();
+
+  bool statusChanged();
+  uint8_t *statusData();
+
   void setCamera(uint8_t index);
   void custom(uint8_t *data, size_t len);
 

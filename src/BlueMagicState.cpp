@@ -28,6 +28,60 @@ bool BlueMagicState::changed()
     return changed;
 }
 
+void BlueMagicState::settingsNotify(bool changed, uint8_t *data)
+{
+    _settingsChanged = changed;
+    _settingsData = data;
+}
+
+bool BlueMagicState::settingsChanged()
+{
+    bool changed = _settingsChanged;
+    _settingsChanged = false;
+    return changed;
+}
+
+uint8_t *BlueMagicState::settingsData()
+{
+    return _settingsData;
+}
+
+void BlueMagicState::timecodeNotify(bool changed, uint8_t *data)
+{
+    _timecodeChanged = changed;
+    _timecodeData = data;
+}
+
+bool BlueMagicState::timecodeChanged()
+{
+    bool changed = _timecodeChanged;
+    _timecodeChanged = false;
+    return changed;
+}
+
+uint8_t *BlueMagicState::timecodeData()
+{
+    return _timecodeData;
+}
+
+void BlueMagicState::statusNotify(bool changed, uint8_t *data)
+{
+    _statusChanged = changed;
+    _statusData = data;
+}
+
+bool BlueMagicState::statusChanged()
+{
+    bool changed = _statusChanged;
+    _statusChanged = false;
+    return changed;
+}
+
+uint8_t *BlueMagicState::statusData()
+{
+    return _statusData;
+}
+
 void BlueMagicState::setCameraStatus(uint8_t status)
 {
     _status = status;

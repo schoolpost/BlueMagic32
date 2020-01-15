@@ -1,11 +1,16 @@
 #include <M5StickC.h>
 #include <BlueMagic32.h>
 
+#define LED_PIN 10
+
 void setup()
 {
 
   M5.begin();
   Serial.begin(115200);
+
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
 
   BMDConnection.begin("BlueMagic32");
   BMDControl = BMDConnection.connect();
@@ -38,10 +43,12 @@ void loop()
     if (BMDControl->isRecording())
     {
       M5.Lcd.setTextColor(RED);
+      digitalWrite(LED_PIN, LOW);
     }
     else
     {
       M5.Lcd.setTextColor(TFT_WHITE);
+      digitalWrite(LED_PIN, HIGH);
     }
 
     M5.Lcd.fillScreen(TFT_BLACK);

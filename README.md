@@ -32,6 +32,10 @@ You will need to install these software packages first. Get the latest version o
 
 - [ESP32 Arduino Library](https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md)
 
+If using an M5StickC you also need to install their library:
+
+- [M5StickC Library](https://github.com/m5stack/M5StickC)
+
 ### Installing BlueMagic32
 
 Download this repository as a .zip file and add it to the Arduino Library.

@@ -17,6 +17,36 @@ bool BlueMagicCameraController::changed()
   return _state->changed();
 }
 
+bool BlueMagicCameraController::settingsChanged()
+{
+  return _state->settingsChanged();
+}
+
+uint8_t *BlueMagicCameraController::settingsData()
+{
+  return _state->settingsData();
+}
+
+bool BlueMagicCameraController::timecodeChanged()
+{
+  return _state->timecodeChanged();
+}
+
+uint8_t *BlueMagicCameraController::timecodeData()
+{
+  return _state->timecodeData();
+}
+
+bool BlueMagicCameraController::statusChanged()
+{
+  return _state->statusChanged();
+}
+
+uint8_t *BlueMagicCameraController::statusData()
+{
+  return _state->statusData();
+}
+
 uint32_t BlueMagicCameraController::mapFloat(float value)
 {
   return (uint32_t)mapf(value, 0, 1.0, 0, 2047.0);
