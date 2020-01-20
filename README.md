@@ -182,15 +182,6 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
 ```
   bool changed();
 
-  bool settingsChanged();
-  uint8_t *settingsData();
-
-  bool timecodeChanged();
-  uint8_t *timecodeData();
-
-  bool statusChanged();
-  uint8_t *statusData();
-
   void setCamera(uint8_t index);
   void custom(uint8_t *data, size_t len);
 
@@ -251,6 +242,19 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
 
   String timecode();
   uint32_t timecodeRaw();
+
+
+  // for advanced users looking to see raw data streaming from the ble characteristics, use these methods:
+
+  bool settingsChanged();
+  uint8_t *settingsData();
+
+  bool timecodeChanged();
+  uint8_t *timecodeData();
+
+  bool statusChanged();
+  uint8_t *statusData();
+
 ```
 
 ## Examples
