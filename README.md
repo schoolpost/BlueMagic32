@@ -267,15 +267,21 @@ Open them, adjust yoru board settings and upload!
 
 ### Basic Remote Trigger
 
-Start/Stop recording using a button.
+Start/Stop recording using the built-in boot button.
+
+![basic-trigger](docs/basic.jpg)
 
 ### M5StickC Trigger with Timecode
 
 Start/Stop recording using the builtin button with live timecode display.
 
+![timecode-trigger](docs/timecode.jpg)
+
 ### M5StickC Settings Display
 
 Display live camera settings on the builtin screen.
+
+![settings](docs/settings.jpg)
 
 # Donation
 
