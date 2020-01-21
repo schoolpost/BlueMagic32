@@ -166,6 +166,7 @@ class MySecurity : public BLESecurityCallbacks
 {
   uint32_t onPassKeyRequest()
   {
+    // code snippet from jeppo7745 https://www.instructables.com/id/Magic-Button-4k-the-20USD-BMPCC4k-Remote/
     Serial.println("---> PLEASE ENTER 6 DIGIT PIN (end with ENTER) : ");
     int pinCode = 0;
     char ch;
