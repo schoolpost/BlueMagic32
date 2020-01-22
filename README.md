@@ -18,11 +18,21 @@ ESP32 is a micro-controller from Espressif that can be found in lots of low-cost
 
 This library should work with vrtiually any ESP32 device, but for those stepping into the scene for the first time I would highly recommend the [M5StickC](https://m5stack.com/products/stick-c) as this development device comes with a builtin display, buttons, battery and lots more!
 
+[![Early Demo](https://i.vimeocdn.com/video/835307994.webp?mw=1400&mh=788&q=90)](https://vimeo.com/376290054)
+
+
 ![esp32](docs/devices.jpg)
 
 # Getting Started
 
 ## Installation
+
+### Video 
+
+Demonstration of how to install all the required software components and simple real world demo. 
+
+[![Install + Usage Demo](https://i.vimeocdn.com/video/848581621.webp?mw=1400&mh=788&q=90)](https://vimeo.com/386151760)
+
 
 ### Prerequisites
 
