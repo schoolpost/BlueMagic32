@@ -261,7 +261,7 @@ int32_t BlueMagicCameraController::getIso()
   return _state->getIso();
 }
 
-void BlueMagicCameraController::shutterAngle(int32_t shutter)
+void BlueMagicCameraController::shutterAngle(float shutter)
 {
   if (shutter < 1 && shutter > 360)
     return;
