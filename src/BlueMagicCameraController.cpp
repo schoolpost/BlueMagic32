@@ -287,7 +287,7 @@ void BlueMagicCameraController::shutterSpeed(int32_t shutter)
   _cameraControl->writeValue(data, 12, true);
 }
 
-int32_t BlueMagicCameraController::getShutter()
+float BlueMagicCameraController::getShutter()
 {
   return _state->getShutter() / 100;
 }
@@ -368,6 +368,11 @@ int16_t BlueMagicCameraController::getFrameWidth()
 int16_t BlueMagicCameraController::getFrameHeight()
 {
   return _state->getFrameHeight();
+}
+
+int8_t BlueMagicCameraController::getFormatFlags()
+{
+  return _state->getFormatFlags();
 }
 
 String BlueMagicCameraController::timecode()

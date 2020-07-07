@@ -167,7 +167,7 @@ void BlueMagicState::setShutter(int32_t shutter)
     _shutter = shutter;
 }
 
-int32_t BlueMagicState::getShutter()
+float BlueMagicState::getShutter()
 {
     return _shutter;
 }
@@ -230,6 +230,16 @@ void BlueMagicState::setFrameHeight(int16_t height)
 int16_t BlueMagicState::getFrameHeight()
 {
     return _frameHeight;
+}
+
+void BlueMagicState::setFormatFlags(int8_t flags)
+{
+    _flags = flags;
+}
+
+int8_t BlueMagicState::getFormatFlags()
+{
+    return _flags;
 }
 
 void BlueMagicState::setWhiteBalance(int16_t whiteBalance)

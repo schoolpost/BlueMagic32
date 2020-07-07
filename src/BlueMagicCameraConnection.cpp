@@ -62,6 +62,7 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
   //resolution + framerate
   if (pData[0] == 255 && pData[4] == 1 && pData[5] == 9)
   {
+
     changed = true;
     int16_t frL = pData[8];
     int16_t frH = pData[9] << 8;
@@ -79,10 +80,13 @@ static void controlNotify(BLERemoteCharacteristic *pBLERemoteCharacteristic, uin
     int16_t hH = pData[15] << 8;
     int16_t height = hL + hH;
 
+    int8_t flags = pData[16];
+
     blu->setFrameRate(frameRate);
     blu->setSensorFrameRate(sensorRate);
     blu->setFrameWidth(width);
     blu->setFrameHeight(height);
+    blu->setFormatFlags(flags);
   }
 
   // white balance
