@@ -446,7 +446,19 @@ void BlueMagicCameraConnection::clearPairing()
   {
     esp_ble_remove_bond_device(*getCameraAddress()->getNative());
   }
-  esp_ble_remove_bond_device(*BLEAddress("90:fd:9f:c1:7b:4b").getNative());
+
+  int dev_num = esp_ble_get_bond_device_num();
+
+  esp_ble_bond_dev_t *dev_list = (esp_ble_bond_dev_t *)malloc(sizeof(esp_ble_bond_dev_t) * dev_num);
+  esp_ble_get_bond_device_list(&dev_num, dev_list);
+  for (int i = 0; i < dev_num; i++)
+  {
+    BLEAddress baddr = BLEAddress(dev_list[i].bd_addr);
+    Serial.println(baddr.toString().c_str());
+    esp_ble_remove_bond_device(dev_list[i].bd_addr);
+  }
+
+  free(dev_list);
   setAuthentication(false);
   // setCameraAddress(nullptr);
   _pref->begin(_name.c_str(), false);
