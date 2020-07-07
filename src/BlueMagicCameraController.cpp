@@ -268,8 +268,8 @@ void BlueMagicCameraController::shutterAngle(float shutter)
 
   shutter = shutter * 100;
 
-  uint8_t l = shutter & 0xff;
-  uint8_t h = (shutter >> 8);
+  uint8_t l = int(shutter) & 0xff;
+  uint8_t h = (int(shutter) >> 8);
 
   uint8_t data[12] = {255, 8, 0, 0, 1, 11, 3, 0, l, h, 0, 0};
   _cameraControl->writeValue(data, 12, true);

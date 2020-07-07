@@ -90,7 +90,7 @@ public:
   int32_t getIso();
 
   void shutterSpeed(int32_t value);
-  void shutterAngle(int32_t value);
+  void shutterAngle(float value);
   float getShutter();
 
   void whiteBalance(int16_t whiteBalance, int16_t tint);
