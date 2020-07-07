@@ -28,6 +28,7 @@ private:
     int16_t _sensorFrameRate = 0;
     int16_t _frameWidth = 0;
     int16_t _frameHeight = 0;
+    int8_t _flags = 0;
 
     int16_t _tint = 0;
     int16_t _whiteBalance = 0;
@@ -68,7 +69,7 @@ public:
     uint32_t getTimecodeRaw();
 
     void setTransportMode(int8_t mode);
-    int8_t getTransportMode();
+    int8_t getTransportMode();    
 
     void setAperture(float aperture);
     float getAperture();
@@ -83,7 +84,7 @@ public:
     int32_t getIso();
 
     void setShutter(int32_t shutter);
-    int32_t getShutter();
+    float getShutter();
 
     void setCodec(int8_t codec);
     int8_t getCodec();
@@ -102,6 +103,9 @@ public:
 
     void setFrameHeight(int16_t height);
     int16_t getFrameHeight();
+
+    void setFormatFlags(int8_t flags);
+    int8_t getFormatFlags();    
 
     void setWhiteBalance(int16_t whiteBalance);
     int16_t getWhiteBalance();

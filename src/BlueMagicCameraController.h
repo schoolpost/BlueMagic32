@@ -90,8 +90,8 @@ public:
   int32_t getIso();
 
   void shutterSpeed(int32_t value);
-  void shutterAngle(int32_t value);
-  int32_t getShutter();
+  void shutterAngle(float value);
+  float getShutter();
 
   void whiteBalance(int16_t whiteBalance, int16_t tint);
   void autoWhiteBalance();
@@ -107,6 +107,8 @@ public:
   void resolution(int16_t width, int16_t height);
   int16_t getFrameWidth();
   int16_t getFrameHeight();
+
+  int8_t getFormatFlags();
 
   String timecode();
   uint32_t timecodeRaw();

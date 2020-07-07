@@ -261,15 +261,15 @@ int32_t BlueMagicCameraController::getIso()
   return _state->getIso();
 }
 
-void BlueMagicCameraController::shutterAngle(int32_t shutter)
+void BlueMagicCameraController::shutterAngle(float shutter)
 {
   if (shutter < 1 && shutter > 360)
     return;
 
   shutter = shutter * 100;
 
-  uint8_t l = shutter & 0xff;
-  uint8_t h = (shutter >> 8);
+  uint8_t l = int(shutter) & 0xff;
+  uint8_t h = (int(shutter) >> 8);
 
   uint8_t data[12] = {255, 8, 0, 0, 1, 11, 3, 0, l, h, 0, 0};
   _cameraControl->writeValue(data, 12, true);
@@ -287,7 +287,7 @@ void BlueMagicCameraController::shutterSpeed(int32_t shutter)
   _cameraControl->writeValue(data, 12, true);
 }
 
-int32_t BlueMagicCameraController::getShutter()
+float BlueMagicCameraController::getShutter()
 {
   return _state->getShutter() / 100;
 }
@@ -368,6 +368,11 @@ int16_t BlueMagicCameraController::getFrameWidth()
 int16_t BlueMagicCameraController::getFrameHeight()
 {
   return _state->getFrameHeight();
+}
+
+int8_t BlueMagicCameraController::getFormatFlags()
+{
+  return _state->getFormatFlags();
 }
 
 String BlueMagicCameraController::timecode()
