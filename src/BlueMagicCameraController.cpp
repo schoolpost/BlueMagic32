@@ -218,7 +218,7 @@ float BlueMagicCameraController::getZoom()
 
 void BlueMagicCameraController::aperture(float value)
 {
-  if (value < 0 && value > 1)
+  if (value < 0 || value > 1)
     return;
 
   uint16_t val = mapFloat(value);
