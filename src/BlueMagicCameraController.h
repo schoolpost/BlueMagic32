@@ -113,12 +113,16 @@ public:
   String timecode();
   uint32_t timecodeRaw();
 
+  bool getEfCamera();
+
 private:
   friend class BlueMagicCameraConnection;
   BlueMagicCameraController(BLERemoteCharacteristic *outgoingCameraControl);
   BLERemoteCharacteristic *_cameraControl;
   BlueMagicState *_state = BlueMagicState::getInstance();
   uint8_t _cameraIndex = 255;
+  void setEfCamera(bool type);
+  bool _efCamera = false;
   uint32_t mapFloat(float value);
 };
 

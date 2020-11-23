@@ -12,6 +12,8 @@ static BLEUUID Timecode("6D8F2110-86F1-41BF-9AFB-451D87E976C8");
 static BLEUUID CameraStatus("7FE8691D-95DC-4FC5-8ABD-CA74339B51B9");
 static BLEUUID DeviceName("FFAC0C52-C9FB-41A0-B063-CC76282EB89C");
 
+static BLEUUID CameraModel("00002a00-0000-1000-8000-00805f9b34fb"); // 2A24
+
 static BLEUUID ServiceId("00001800-0000-1000-8000-00805f9b34fb");
 static BLEUUID BmdCameraService("291D567A-6D75-11E6-8B77-86F30CA893D3");
 
@@ -310,6 +312,20 @@ bool BlueMagicCameraConnection::connectToServer(BLEAddress address)
     return false;
   }
 
+  BLERemoteService *pRemoteDeviceService = _client->getService(ServiceId);
+  if (pRemoteDeviceService == nullptr)
+  {
+    Serial.print("Failed to find our service UUID: ");
+    Serial.println(ServiceId.toString().c_str());
+    return false;
+  }
+
+  BLERemoteCharacteristic *cameraModelInfo = pRemoteDeviceService->getCharacteristic(CameraModel);
+  if (cameraModelInfo != nullptr)
+  {
+    _cameraModel = String(cameraModelInfo->readValue().c_str());
+  }
+
   _deviceName = pRemoteService->getCharacteristic(DeviceName);
   if (_deviceName != nullptr)
   {
@@ -356,6 +372,11 @@ bool BlueMagicCameraConnection::connectToServer(BLEAddress address)
   return true;
 }
 
+String BlueMagicCameraConnection::getCameraModel()
+{
+  return _cameraModel;
+}
+
 void BlueMagicCameraConnection::setController()
 {
   _cameraControl = new BlueMagicCameraController(_outgoingCameraControl);
@@ -391,6 +412,22 @@ BlueMagicCameraController *BlueMagicCameraConnection::connect()
   return connect(0);
 }
 
+void BlueMagicCameraConnection::camModelConfig()
+{
+  if (_cameraControl != nullptr)
+  {
+    if (_cameraModel.indexOf("Pocket Cinema Camera 4K") < 0)
+    {
+      _cameraControl->setEfCamera(true);
+      // if an EF camera is connected we need to treat some functions differently, like focus.
+      // set the focus to the center of the range as a starting point.
+      // will need to be worked on, we should get/parse this value from the camera
+      // in the incoming notification.
+      _cameraControl->focus(0.5);
+    }
+  }
+}
+
 BlueMagicCameraController *BlueMagicCameraConnection::connect(uint8_t index)
 {
   if (_cameraControl != nullptr)
@@ -422,6 +459,7 @@ BlueMagicCameraController *BlueMagicCameraConnection::connect(uint8_t index)
     _pref->putBool("authenticated", getAuthentication());
     _pref->end();
     setCameraAddress(address);
+    camModelConfig();
     return _cameraControl;
   }
 
