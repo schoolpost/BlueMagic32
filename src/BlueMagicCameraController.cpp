@@ -173,17 +173,45 @@ int8_t BlueMagicCameraController::getCodecQuality()
 }
 
 void BlueMagicCameraController::focus(float focus)
+
 {
   if (focus < 0 && focus > 1)
     return;
 
-  uint16_t val = mapFloat(focus);
+  if (!getEfCamera())
+  {
+    // set absolute focus position if we are connected to a MFT camera
+    uint16_t val = mapFloat(focus);
 
-  uint8_t xlow = val & 0xff;
-  uint8_t xhigh = (val >> 8);
+    uint8_t xlow = val & 0xff;
+    uint8_t xhigh = (val >> 8);
 
-  uint8_t data[10] = {255, 6, 0, 0, 0, 0, 128, 0, xlow, xhigh};
-  _cameraControl->writeValue(data, 10, true);
+    uint8_t data[10] = {255, 6, 0, 0, 0, 0, 128, 0, xlow, xhigh};
+    _cameraControl->writeValue(data, 10, true);
+  }
+  else
+  {
+    // set relative focus position if we are connected to an EF camera.
+    // snippet modified and based from github user: BenjaminNelan
+    float currentFocus = getFocus();
+    float focusDelta = 0.0;
+
+    if (currentFocus > focus)
+    {
+      focusDelta = -(currentFocus - focus);
+    }
+    else
+    {
+      focusDelta = (focus - currentFocus);
+    }
+
+    uint16_t focusVal = mapFloat(focusDelta);
+    uint8_t focusL = focusVal & 0xff;
+    uint8_t focusH = (focusVal >> 8);
+
+    uint8_t data[12] = {255, 6, 0, 0, 0, 0, 128, 1, focusL, focusH, 0, 0};
+    _cameraControl->writeValue(data, 12, true);
+  }
 }
 
 void BlueMagicCameraController::instantAutoFocus()
@@ -383,4 +411,14 @@ String BlueMagicCameraController::timecode()
 uint32_t BlueMagicCameraController::timecodeRaw()
 {
   return _state->getTimecodeRaw();
+}
+
+void BlueMagicCameraController::setEfCamera(bool type)
+{
+  _efCamera = type;
+}
+
+bool BlueMagicCameraController::getEfCamera()
+{
+  return _efCamera;
 }

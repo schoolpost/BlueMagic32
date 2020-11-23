@@ -34,6 +34,8 @@ public:
   void begin(String name);
   void begin(String name, Preferences &pref);
 
+  String getCameraModel();
+
   bool scan(bool active, int duration);
 
   BlueMagicCameraController *connect();
@@ -49,6 +51,8 @@ private:
   String _name;
   Preferences *_pref;
   bool _init = false;
+
+  String _cameraModel;
 
   bool _authenticated;
   int _connected;
@@ -72,6 +76,8 @@ private:
 
   int connected();
   bool authenticated();
+
+  void camModelConfig();
 
   void setController();
 

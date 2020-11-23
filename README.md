@@ -1,6 +1,6 @@
 # BlueMagic32
 
-![](https://img.shields.io/badge/Version-1.0.1-green.svg) ![](https://img.shields.io/badge/BlackmagicCameraControl-1.3-green.svg)
+![](https://img.shields.io/badge/Version-1.0.2-green.svg) ![](https://img.shields.io/badge/BlackmagicCameraControl-1.3-green.svg)
 
 Arduino ESP32 Library for connecting to Blackmagic Cameras using Bluetooth Low Energy.
 
@@ -180,6 +180,8 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
 
   BlueMagicCameraController *connect();
 
+  String getCameraModel();
+
   void disconnect();
 
   void clearPairing();
@@ -252,6 +254,8 @@ When you wish to connect to another camera or need to rebond your ESP32 to the c
 
   String timecode();
   uint32_t timecodeRaw();
+
+  bool getEfCamera();
 
 
   // for advanced users looking to see raw data streaming from the ble characteristics, use these methods:
