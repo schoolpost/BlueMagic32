@@ -159,10 +159,6 @@ class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks
     {
       advertisedDevice.getScan()->stop();
     }
-    else
-    {
-      advertisedDevice.getScan()->erase(advertisedDevice.getAddress());
-    }
   }
 };
 
@@ -405,8 +401,13 @@ BlueMagicCameraController *BlueMagicCameraConnection::connect(uint8_t index)
 
   if (scanned)
   {
-    address = _bleScan->getResults().getDevice(index).getAddress();
-    ok = connectToServer(address);
+    int count = _bleScan->getResults().getCount();
+    if (count > 0)
+    {
+      int foundIndex = count - 1;
+      address = _bleScan->getResults().getDevice(foundIndex).getAddress();
+      ok = connectToServer(address);
+    }
   }
   else
   {

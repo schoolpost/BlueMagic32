@@ -1,6 +1,6 @@
 # BlueMagic32
 
-![](https://img.shields.io/badge/Version-1.0.1-green.svg) ![](https://img.shields.io/badge/BlackmagicCameraControl-1.3-green.svg)
+![](https://img.shields.io/badge/Version-1.0.2-green.svg) ![](https://img.shields.io/badge/BlackmagicCameraControl-1.3-green.svg) ![](https://img.shields.io/badge/arduino--esp32-1.0.5-green.svg)
 
 Arduino ESP32 Library for connecting to Blackmagic Cameras using Bluetooth Low Energy.
 
