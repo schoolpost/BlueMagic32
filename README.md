@@ -31,7 +31,7 @@ This library should work with vrtiually any ESP32 device, but for those stepping
 
 Demonstration of how to install all the required software components and simple real world demo. 
 
-[![Install + Usage Demo](https://i.vimeocdn.com/video/848581621.webp?mw=1400&mh=788&q=90)](https://vimeo.com/386151760)
+[![Install + Usage Demo](https://i.vimeocdn.com/video/848581621-28580adffc5412a29420a32fc0070ae7e90a2ceac4e7a4f7e02ae12443ba31c1-d?mw=1700&mh=956&q=70)](https://vimeo.com/386151760)
 
 
 ### Prerequisites
