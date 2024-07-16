@@ -401,11 +401,11 @@ BlueMagicCameraController *BlueMagicCameraConnection::connect(uint8_t index)
 
   if (scanned)
   {
-    int count = _bleScan->getResults().getCount();
+    int count = _bleScan->getResults()->getCount();
     if (count > 0)
     {
       int foundIndex = count - 1;
-      address = _bleScan->getResults().getDevice(foundIndex).getAddress();
+      address = _bleScan->getResults()->getDevice(foundIndex).getAddress();
       ok = connectToServer(address);
     }
   }
